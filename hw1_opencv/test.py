@@ -30,3 +30,14 @@ img_B[:, :, 0] = img[:, :, 0]
 cv2.imwrite( "./img_R.jpg", img_R)
 cv2.imwrite( "./img_G.jpg", img_G)
 cv2.imwrite( "./img_B.jpg", img_B)
+
+img = np.zeros((400, 400, 3), np.uint8)
+img.fill(200)
+
+cv2.line(img, (0, 0), (255, 255), (0, 0, 255), 5)
+cv2.rectangle(img, (0, 0), (255, 255), (0, 255, 0), 5)
+cv2.rectangle(img, (0, 0), (100, 100), (0, 255, 255), -5)
+cv2.circle(img, (100, 100), 100, (255, 255, 0), 5)
+cv2.circle(img, (100, 100), 50, (255, 0, 255), -1)
+
+cv2.imwrite( "./img.jpg", img)
