@@ -6,7 +6,7 @@ img = cv2.imread("./circle.jpg", 0)
 img = cv2.dilate(img, np.ones((7, 7)), iterations=3)
 img = cv2.erode(img, np.ones((7, 7)), iterations=3)
 
-ret, out = cv2.threshold(img, 170, 250, cv2.THRESH_BINARY)
+ret, out = cv2.threshold(img, 170, 255, cv2.THRESH_BINARY)
 
 cv2.imwrite("./circle_out.jpg", out)
 
@@ -16,8 +16,8 @@ img = cv2.imread("./man.jpg", 0)
 
 img = cv2.dilate(img, np.ones((3, 3)), iterations=2)
 
-ret, img = cv2.threshold(img, 170, 250, cv2.THRESH_BINARY)
-ret, img0 = cv2.threshold(img0, 170, 250, cv2.THRESH_BINARY)
+ret, img = cv2.threshold(img, 170, 255, cv2.THRESH_BINARY)
+ret, img0 = cv2.threshold(img0, 170, 255, cv2.THRESH_BINARY)
 
 out = img - img0
 
