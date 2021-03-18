@@ -1,24 +1,20 @@
 import numpy as np
 import cv2
 # circle
-img = cv2.imread("./circle.jpg", 0)
-
-img = cv2.dilate(img, np.ones((7, 7)), iterations=3)
-img = cv2.erode(img, np.ones((7, 7)), iterations=3)
-
-ret, out = cv2.threshold(img, 170, 255, cv2.THRESH_BINARY)
-
-cv2.imwrite("./circle_out.jpg", out)
-
-# man
-img0 = cv2.imread("./man.jpg", 0)
-img = cv2.imread("./man.jpg", 0)
-
+img = cv2.imread("./coin.jpg", 0)
+# height = img.shape[0]
+# width = img.shape[1]
+# img = cv2.resize(img, (int(width*0.25), int(height*0.25)), interpolation=cv2.INTER_CUBIC)
+edged = cv2.Canny(img, 30, 150)
 img = cv2.dilate(img, np.ones((3, 3)), iterations=2)
+img = cv2.erode(img, np.ones((3, 3)), iterations=2)
+ret, img  = cv2.threshold(img, 80, 255, cv2.THRESH_BINARY)
 
-ret, img = cv2.threshold(img, 170, 255, cv2.THRESH_BINARY)
-ret, img0 = cv2.threshold(img0, 170, 255, cv2.THRESH_BINARY)
 
-out = img - img0
 
-cv2.imwrite("./man_out.jpg", out)
+# num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(img, connectivity=8)
+# print(num_labels)
+# blurred = cv2.GaussianBlur(img, (11, 11), 10)
+
+
+cv2.imwrite("./coin_out3.jpg", img)
