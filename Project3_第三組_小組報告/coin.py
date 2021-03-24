@@ -1,8 +1,8 @@
 import numpy as np
 import cv2
 # circle
-img_3 = cv2.imread("./coin.jpg")
-img = cv2.imread("./coin.jpg", 0)
+img_3 = cv2.imread("./images/coin.jpg")
+img = cv2.imread("./images/coin.jpg", 0)
 height = img.shape[0]
 width = img.shape[1]
 # img = cv2.resize(img, (int(width*0.25), int(height*0.25)), interpolation=cv2.INTER_CUBIC)
@@ -65,4 +65,4 @@ print("Total money is: " + str(price))
 
 img_3 = cv2.resize(img_3, (int(width*0.25), int(height*0.25)), interpolation=cv2.INTER_CUBIC)
 
-cv2.imwrite("./coin_out.jpg", img_3)
+cv2.imwrite("./outcome/coin_out.jpg", img_3)

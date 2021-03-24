@@ -1,21 +1,22 @@
 import numpy as np
 import cv2
 # coin2
-img_3 = cv2.imread("./coin2.jpg")
-img = cv2.imread("./coin2.jpg", 0)
-img_gray = cv2.imread("./coin2.jpg", 0)
+img_3 = cv2.imread("./images/coin2.jpg")
+img = cv2.imread("./images/coin2.jpg", 0)
+img_gray = cv2.imread("./images/coin2.jpg", 0)
 
 height = img.shape[0]
 width = img.shape[1]
 price = 0
-edged = cv2.Canny(img, 30, 150)
+
 img = cv2.GaussianBlur(img, (55, 55), 5)
 ret, img  = cv2.threshold(img, 50, 255, cv2.THRESH_BINARY)
+# cv2.imwrite("./coin2_out.jpg", img)
 # img = cv2.dilate(img, np.ones((1, 1)), iterations=1)
 # img = cv2.erode(img, np.ones((1, 1)), iterations=1)
 num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(img, connectivity=8)
-# print(num_labels)
-# print("-------------------------------")
+
+
 # print("[    x,   y,    width,    height,    area]")
 # print(stats)
 # print(stats.shape)
@@ -78,4 +79,4 @@ print("Total money is: " + str(price))
 img_3 = cv2.resize(img_3, (int(width*0.25), int(height*0.25)),
     interpolation=cv2.INTER_CUBIC)
 
-cv2.imwrite("./coin2_out.jpg", img_3)
+cv2.imwrite("./outcome/coin2_out.jpg", img_3)

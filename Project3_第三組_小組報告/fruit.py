@@ -54,8 +54,8 @@ def restoreXY(origin, present):
     return result
 
 
-apple = cv2.imread("./apple.jpg")
-orange = cv2.imread("./orange.jpg")
+apple = cv2.imread("./images/apple.jpg")
+orange = cv2.imread("./images/orange.jpg")
 
 gpL = 6
 
@@ -133,4 +133,4 @@ gao = restoreXY(apple, gao)
 # direct = np.hstack((apple[:, :apple.shape[1] // 2], orange[:, orange.shape[1] // 2:]))
 # cv2.imwrite("./fruit_out_direct.jpg", direct)
 
-cv2.imwrite("./fruit_out.jpg", gao)
+cv2.imwrite("./outcome/fruit_out.jpg", gao)

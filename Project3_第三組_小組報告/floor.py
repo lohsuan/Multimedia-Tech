@@ -1,8 +1,8 @@
 import numpy as np
 import cv2
 # circle
-img_3 = cv2.imread("./floor.jpg")   # 3 channels   
-img = cv2.imread("./floor.jpg", 0)
+img_3 = cv2.imread("./images/floor.jpg")   # 3 channels
+img = cv2.imread("./images/floor.jpg", 0)
 height = img.shape[0]
 width = img.shape[1]
 
@@ -17,7 +17,7 @@ ret, img  = cv2.threshold(img, 200, 255, cv2.THRESH_BINARY)
 
 
 img = 255 - img
-cv2.imwrite("./floor_out.jpg", img)
+# cv2.imwrite("./floor_out.jpg", img)
 
 # lines = cv2.HoughLinesP(img, 1, np.pi/180, 200, 100, 30)
 lines = cv2.HoughLinesP(img, 1, np.pi/180, 800, 50, 100)
@@ -29,4 +29,4 @@ for i in lines [:, 0, :]:
 
 img_3 = cv2.resize(img_3, (int(width*0.25), int(height*0.25)),interpolation=cv2.INTER_CUBIC)
 
-cv2.imwrite("./floor_out.jpg", img_3)
+cv2.imwrite("./outcome/floor_out.jpg", img_3)
