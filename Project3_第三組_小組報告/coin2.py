@@ -26,12 +26,12 @@ for i in stats[:, ]:
         y1 = int(i[1])
         x2 = int(i[0] + i[2])
         y2 = int(i[1] + i[3])
-        if(i[4] > 1400000):
-            price += 1000
-            cv2.rectangle(img_3, (x1, y1), (x2, y2), (255, 255, 255), 10)
-        elif(i[2] > 1000):
+        if(i[2] > 1000):
             price += 500
             cv2.rectangle(img_3, (x1, y1), (x2, y2), (255, 0, 255), 10)
+        elif(i[4] > 1400000):
+            price += 1000
+            cv2.rectangle(img_3, (x1, y1), (x2, y2), (255, 255, 255), 10)
         else:
             price += 100
             cv2.rectangle(img_3, (x1, y1), (x2, y2), (255, 0, 0), 10)
