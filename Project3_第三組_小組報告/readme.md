@@ -1,4 +1,7 @@
 ## How to start
 ```python
-$ python test.py
+$ python coin.py
+$ python coin2.py
+$ python floor.py
+$ python fruit.py
 ```

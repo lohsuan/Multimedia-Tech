@@ -11,15 +11,8 @@ price = 0
 
 img = cv2.GaussianBlur(img, (55, 55), 5)
 ret, img  = cv2.threshold(img, 50, 255, cv2.THRESH_BINARY)
-# cv2.imwrite("./coin2_out.jpg", img)
-# img = cv2.dilate(img, np.ones((1, 1)), iterations=1)
-# img = cv2.erode(img, np.ones((1, 1)), iterations=1)
+
 num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(img, connectivity=8)
-
-
-# print("[    x,   y,    width,    height,    area]")
-# print(stats)
-# print(stats.shape)
 
 for i in stats[:, ]:
     if(i[4] > 1000000 and i[4] <2000000):
@@ -37,15 +30,8 @@ for i in stats[:, ]:
             price += 100
             cv2.rectangle(img_3, (x1, y1), (x2, y2), (255, 0, 0), 10)
 
-# cv2.imwrite("./coin2_out_binary.jpg", img)
-
-
 circles = cv2.HoughCircles(img_gray, cv2.HOUGH_GRADIENT, 1, 250, param1=700, param2=50,minRadius=100, maxRadius=160)
 
-# if circles is not None:
-#     print("Total circle detect: "+ str(len(circles[0])))
-
-#  draw circles
 if circles is not None:
     circles = np.uint16(np.around(circles))
     for i in circles[0, :]:
@@ -76,7 +62,6 @@ if circles is not None:
 
 print("Total money is: " + str(price))
 
-img_3 = cv2.resize(img_3, (int(width*0.25), int(height*0.25)),
-    interpolation=cv2.INTER_CUBIC)
+img_3 = cv2.resize(img_3, (int(width*0.25), int(height*0.25)), interpolation=cv2.INTER_CUBIC)
 
 cv2.imwrite("./outcome/coin2_out.jpg", img_3)
