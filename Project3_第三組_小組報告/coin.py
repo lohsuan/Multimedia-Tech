@@ -21,7 +21,7 @@ if circles is not None:
         elif(i[2] < 210):
             price += 5
             cv2.rectangle(img_3, (i[0]-i[2], i[1]+i[2]), (i[0]+i[2], i[1]-i[2]), (0, 125, 255), 10)
-        # 50 
+        # 50
         elif(i[2] > 248):
             price += 50
             cv2.rectangle(img_3, (i[0]-i[2], i[1]+i[2]), (i[0]+i[2], i[1]-i[2]), (0, 255, 0), 10)

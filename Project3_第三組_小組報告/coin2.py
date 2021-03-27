@@ -15,20 +15,20 @@ ret, img  = cv2.threshold(img, 50, 255, cv2.THRESH_BINARY)
 num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(img, connectivity=8)
 
 for i in stats[:, ]:
-    if(i[4] > 1000000 and i[4] <2000000):
+    if(i[4] > 1000000 and i[4] < 2000000):
         x1 = int(i[0])
         y1 = int(i[1])
         x2 = int(i[0] + i[2])
         y2 = int(i[1] + i[3])
-        if(i[2] > 1000):
+        if(i[2] > 1000): #500
             price += 500
-            cv2.rectangle(img_3, (x1, y1), (x2, y2), (255, 0, 255), 10)
-        elif(i[4] > 1400000):
+            cv2.rectangle(img_3, (x1, y1), (x2, y2), (255, 0, 255), 10) #purple
+        elif(i[4] > 1400000): #1000
             price += 1000
-            cv2.rectangle(img_3, (x1, y1), (x2, y2), (255, 255, 255), 10)
-        else:
+            cv2.rectangle(img_3, (x1, y1), (x2, y2), (255, 255, 255), 10) #white
+        else: #100
             price += 100
-            cv2.rectangle(img_3, (x1, y1), (x2, y2), (255, 0, 0), 10)
+            cv2.rectangle(img_3, (x1, y1), (x2, y2), (255, 0, 0), 10) #blue
 
 circles = cv2.HoughCircles(img_gray, cv2.HOUGH_GRADIENT, 1, 250, param1=700, param2=50,minRadius=100, maxRadius=160)
 
