@@ -6,9 +6,9 @@ import numpy as np
 # Project4_第三組_小組報告
 wine = datasets.load_wine()
 
-# X = wine.data
 
-X = wine.data[:, 0:7:2]
+# X = wine.data[:, 0:7:2]
+X = wine.data
 y = wine.target
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) 
