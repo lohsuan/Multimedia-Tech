@@ -6,10 +6,22 @@ import numpy as np
 # Project4_第三組_小組報告
 wine = datasets.load_wine()
 
-
-# X = wine.data[:, 0:7:2]
 X = wine.data
 y = wine.target
+
+# method to choose assigned feature in wine.data
+################################# 
+# # s[start:stop:step]
+# # X = wine.data[:, 0:7:2]
+
+# X = list(wine.data[:,0:3])
+# t = list(wine.data[:,8:9])
+
+# for i in range(178):
+#   X[i] = np.append(X[i], t[i])
+
+# X = np.array(X)
+#################################
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) 
 
