@@ -11,60 +11,78 @@ import cv2
 # requirement
 # pip install scikit-datasets
 
-# data preparing
+### data preparing
 
 # people
 lfw_people = fetch_lfw_people(min_faces_per_person=100, resize=0.4)
 
-people_x_images = lfw_people.images[0:1000]
-people_y_target = [0 for i in range(0, 1000)]
-people_y_target = np.array(people_y_target)
-
-print(people_x_images.shape)
-print(people_y_target.shape)
+people_images = lfw_people.images[:1000]
+people_target = [0 for i in range(0, 1000)]
+people_target = np.array(people_target)
 
 # not people
-
-cats_train_amount = 1000
-cats_test_amount = 489
-prediction_amount = 10
-
-cats_x_train = []
-for x in range(cats_train_amount):
-    img = cv2.imread('./cats_train_0_999/cat.%d.jpg' % (x))
+cats_amount = 1000
+cats_images = []
+for x in range(cats_amount):
+    img = cv2.imread('./cats_0_999/cat.%d.jpg' % (x))
     img = cv2.resize(img, (37, 50))
-    cats_x_train.append(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
-cats_x_train = np.array(cats_x_train)
-# print(cats_x_train.shape)
+    cats_images.append(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
+cats_images = np.array(cats_images)
+cats_target = [1 for i in range(0, 1000)]
+cats_target = np.array(cats_target)
 
-cv2.imshow("test",cats_x_train[990])
-cv2.waitKey(0)
-cats_y_train = [1 for i in range(0, 1000)]
+# merge two sets
+images = list(people_images) + list(cats_images)
+target = list(people_target) + list(cats_target)
+images = np.array(images)
+target = np.array(target)
 
+# 20 pictures for prediction 
+prediction_images = lfw_people.images[1000:1010]
+prediction_images = list(prediction_images)
 
-# hog
+for x in range(10):
+    img = cv2.imread('./prediction_1990_1999/cat.%d.jpg' % (x+1990))
+    img = cv2.resize(img, (37, 50))
+    prediction_images.append(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
 
-# people_hogged_fd = []
-# people_hogged_img = []
+prediction_images = np.array(prediction_images)
+prediction_target = [0]*10 + [1]*10
+prediction_target = np.array(prediction_target)
 
-# for image in people_images:
-#   fd, hog_img = hog(image,
-#             orientations=8, pixels_per_cell=(8,8),
-#             cells_per_block=(3,3), visualize=True,
-#             transform_sqrt, multichannel=True
-#             )
-#   people_hogged_fd.append(fd)         # data we want
-#   people_hogged_img.append(hog_img)
+### hog
 
-# x_train, x_test, y_train, y_test = train_test_split(
-#                         people_hogged_fd, people_target,
-#                         test_size=0.3, random_state=0)
+images_fd = []
+for img in images:
+  fd, hog_img = hog(img,
+            orientations=8, pixels_per_cell=(8,8),
+            cells_per_block=(3,3), visualize=True,
+            multichannel=False)
+  images_fd.append(fd)
 
-# # svm
+x_train, x_test, y_train, y_test = train_test_split(
+                        images_fd, target,
+                        test_size=0.25, random_state=0)
 
-# clf = svm.SVC(C=1, kernel='linear', gamma='scale')
-# clf.fit(x_train, y_train)
+### svm
 
-# print("Accuracy")
-# print(clf.score(X_train, y_train))
-# print(clf.score(X_test, y_test))
+clf = svm.SVC(C=1, kernel='linear', gamma='scale')
+clf.fit(x_train, y_train)
+
+### accuracy 
+print("Train Data Accuracy")
+print(clf.score(x_train, y_train))
+print("Test Data Accuracy")
+print(clf.score(x_test, y_test))
+
+### 20 Prediction test
+prediction_images_hogged_fd = []
+for img in prediction_images:
+  fd, hog_img = hog(img,
+                    orientations=8, pixels_per_cell=(8, 8),
+                    cells_per_block=(3, 3), visualize=True,
+                    multichannel=False)
+  prediction_images_hogged_fd.append(fd)
+
+print("Predictin Accuracy")
+print(clf.score(prediction_images_hogged_fd, prediction_target))
