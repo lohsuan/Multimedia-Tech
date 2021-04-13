@@ -1,4 +1,3 @@
-# from skimage import data, io, filters
 import matplotlib.pyplot as plt
 from skimage.feature import hog
 from skimage import data, exposure
@@ -10,6 +9,9 @@ import cv2
 
 # requirement
 # pip install scikit-datasets
+# images' dataset : https://www.kaggle.com/c/dogs-vs-cats/data?select=sampleSubmission.csv
+# cats_0_999: https://drive.google.com/drive/folders/1lDoaCT78dJYHxFhlBZVvNSiktN6HIN_J?usp=sharing
+# prediction_1990_1999: https://drive.google.com/drive/folders/13gwUP4-we6yhHGDE3j0fnLkhz10cBYu0?usp=sharing
 
 ### data preparing
 
