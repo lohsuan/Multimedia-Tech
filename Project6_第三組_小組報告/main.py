@@ -39,7 +39,7 @@ target = list(people_target) + list(cats_target)
 images = np.array(images)
 target = np.array(target)
 
-# 20 pictures for prediction 
+# 20 pictures for prediction
 prediction_images = lfw_people.images[1000:1010]
 prediction_images = list(prediction_images)
 
@@ -85,7 +85,7 @@ x_train, x_test, y_train, y_test = train_test_split(
 clf = svm.SVC(C=1, kernel='linear', gamma='scale')
 clf.fit(x_train, y_train)
 
-### accuracy 
+### accuracy
 print("Train Data Accuracy")
 print(clf.score(x_train, y_train))
 print("Test Data Accuracy")
