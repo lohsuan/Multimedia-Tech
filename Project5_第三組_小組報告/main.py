@@ -39,13 +39,13 @@ target = list(people_target) + list(cats_target)
 images = np.array(images)
 target = np.array(target)
 
-# 20 pictures for prediction 
+# 20 pictures for prediction
 prediction_images = lfw_people.images[1000:1010]
 prediction_images = list(prediction_images)
 
 for x in range(10):
     img = cv2.imread('./prediction_1990_1999/cat.%d.jpg' % (x+1990))
-    img = cv2.resize(img, (37, 50))
+    img = cv2.resize(img, (37, 50)) #(width, height)
     prediction_images.append(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
 
 prediction_images = np.array(prediction_images)
@@ -55,13 +55,26 @@ prediction_target = np.array(prediction_target)
 ### hog
 
 images_fd = []
+# images_img = []
 for img in images:
   fd, hog_img = hog(img,
             orientations=8, pixels_per_cell=(8,8),
             cells_per_block=(3,3), visualize=True,
             multichannel=False)
   images_fd.append(fd)
+  # images_img.append(hog_img)
 
+# fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 4), sharex=True, sharey=True)
+#
+# ax1.axis('off')
+# ax1.imshow(images[1000], cmap=plt.cm.gray)
+#
+# ax2.axis('off')
+# ax2.imshow(images_img[1000], cmap=plt.cm.gray)
+# plt.show()
+# cv2.imshow(images_img[0], cmap=plt.cm.gray)
+
+# waitkey(0)
 x_train, x_test, y_train, y_test = train_test_split(
                         images_fd, target,
                         test_size=0.25, random_state=0)
@@ -71,7 +84,7 @@ x_train, x_test, y_train, y_test = train_test_split(
 clf = svm.SVC(C=1, kernel='linear', gamma='scale')
 clf.fit(x_train, y_train)
 
-### accuracy 
+### accuracy
 print("Train Data Accuracy")
 print(clf.score(x_train, y_train))
 print("Test Data Accuracy")
