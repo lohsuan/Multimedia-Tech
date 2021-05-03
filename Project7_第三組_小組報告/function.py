@@ -1,27 +1,32 @@
-import matplotlib.pyplot as plt
-from skimage import data, exposure
-from sklearn.svm import LinearSVC
+# import matplotlib.pyplot as plt
+# from skimage import data, exposure
+# from sklearn.preprocessing import StandardScaler
+# from scipy.cluster.vq import *
+# from sklearn.svm import LinearSVC
 from sklearn.model_selection import train_test_split
 from sklearn import svm
-from sklearn.preprocessing import StandardScaler
-from scipy.cluster.vq import *
+from skimage.feature import hog
 import numpy as np
 import cv2
 import joblib
+import os
+import random
 
-def img_read(data_amount, img_path) -> list:
-    images = []
-    for x in range(data_amount):
-        img = cv2.imread(img_path % (x))
-        img = cv2.resize(img, (300, 300))
-        images.append(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
-    return images
+def img_read(dir_path) -> list:
+    data = []
+    images = os.listdir(dir_path)   # open the dir
+    for img in images:
+        print("reading ", dir_path + img)
+        img = cv2.imread(dir_path + img)
+        img = cv2.resize(img, (300,300))
+        data.append(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
+    return data
 
 def create_target_list(data_amount, target) -> list:
     targets = [target] *data_amount
     return targets
 
-def create_feature(images, k, all_data_amount) ->list:
+def create_feature(images, k, all_data_amount) -> list:
     ### SIFT
     des_list = []
     sift = cv2.SIFT_create()
@@ -36,13 +41,14 @@ def create_feature(images, k, all_data_amount) ->list:
         descriptors = np.vstack((descriptors, descriptor))
 
     ### K-means
-    voc, variance = kmeans(descriptors, k, 1)
+    from sklearn.cluster import KMeans
+    kmeans = KMeans(n_clusters=k, random_state=0)
+    kmeans.fit(descriptors)
 
     ### generate features
-    # 對於訓練集中的每一張圖片，統計vocabulary中K個word的“詞頻”，得到相應的直方圖
     im_features = np.zeros((all_data_amount, k), 'float32')
     for i in range(all_data_amount):
-        words, distance = vq(des_list[i], voc)
+        words, distance = vq(des_list[i], kmeans.cluster_centers_)
         for w in words:
             im_features[i][w] += 1
 
@@ -51,6 +57,16 @@ def create_feature(images, k, all_data_amount) ->list:
     im_features = stdSlr.transform(im_features) 
     return im_features
 
+def to_hog(images) ->list: 
+    images_fd = []
+    for img in images:
+        fd, hog_img = hog(img,
+                    orientations=8, pixels_per_cell=(8,8),
+                    cells_per_block=(3,3), visualize=True,
+                    multichannel=False)
+        images_fd.append(fd)
+    return images_fd
+
 def fit_module(x_train, y_train):
     clf = LinearSVC(dual=True, max_iter = 3000)
     clf.fit(x_train, y_train)
@@ -58,3 +74,13 @@ def fit_module(x_train, y_train):
 
 def save_module(clf, module_name):
     joblib.dump(clf, module_name) # 儲存模型檔案(svc為訓練的模型)
+
+def random_image(folder) -> list:
+    # data = []
+    images = os.listdir(folder)
+    random_filename = random.choice(images)
+    print(folder + random_filename)
+    image = cv2.imread(folder + random_filename)
+    image = cv2.resize(image, (300,300))
+    # data.append(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY))
+    return image
