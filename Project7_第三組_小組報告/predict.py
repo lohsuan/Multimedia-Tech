@@ -5,51 +5,49 @@ import function
 from skimage.feature import hog
 
 win = cv2.imread('./win.jpg')
+win = cv2.resize(win, (300, 300))
 lose = cv2.imread('./lose.jpg')
+lose = cv2.resize(lose, (300, 300))
 tie = cv2.imread('./tie.jpg')
+tie = cv2.resize(tie, (300, 300))
 
 # human
-# my_path = input('Please input your img path: ')
-my_path = './paper.jpg'
-my_img = cv2.imread(my_path)
-my_img = cv2.resize(my_img, (300,300))
-my_img_gray = cv2.cvtColor(my_img, cv2.COLOR_BGR2GRAY) 
-fd, hog_img = hog(my_img_gray,
-                orientations=8, pixels_per_cell=(8,8),
-                cells_per_block=(3,3), visualize=True,
-                multichannel=False)
-# im_features = function.to_hog(np.array(my_img_gray))
+my_path = input('Please input your img path: ')
+my_img = function.one_img_read(my_path)
+my_img = np.array(my_img)
+im_features = function.to_hog(my_img)
 clf = joblib.load("hog.pkl")
-my_predict_result = clf.predict(fd)
+my_predict_result = clf.predict(im_features)
+i1 = cv2.imread(my_path)
+i1 = cv2.resize(i1, (300, 300))
 
 # Robot
-image = function.random_image('./prediction_000/')
-image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-fd, hog_img = hog(image_gray,
-                orientations=8, pixels_per_cell=(8,8),
-                cells_per_block=(3,3), visualize=True,
-                multichannel=False)
-# im_features = function.to_hog(np.array(image_gray))
-predict_result = clf.predict(fd)
+rawimage, imagepath = function.random_image('./prediction_000/')
+gray = []
+gray.append(cv2.cvtColor(rawimage, cv2.COLOR_BGR2GRAY))
+image = np.array(gray)
+im_features = function.to_hog(image)
+predict_result = clf.predict(im_features)
+i2 = cv2.imread(imagepath)
+i2 = cv2.resize(i2, (300, 300))
 
-outcome = ''
-if(predict_result[0] ==0 & my_predict_result[0] ==1):
-    result = np.hstack((image,win,my_img))
-elif(predict_result[0] ==0 & my_predict_result[0] ==2):
-    result = np.hstack((image,lose,my_img))
-elif(predict_result[0] ==1 & my_predict_result[0] ==2):
-    result = np.hstack((image,win,my_img))
-elif(predict_result[0] ==1 & my_predict_result[0] ==0):
-    result = np.hstack((image,lose,my_img))
-elif(predict_result[0] ==2 & my_predict_result[0] ==0):
-    result = np.hstack((image,win,my_img))
-elif(predict_result[0] ==2 & my_predict_result[0] ==1):
-    result = np.hstack((image,lose,my_img))
+if predict_result[0] == 0 and my_predict_result[0] == 1 :
+    result = np.hstack((i2, win, i1))
+elif predict_result[0] == 0 and my_predict_result[0] == 2 :
+    result = np.hstack(i2, lose, i1)
+elif predict_result[0] == 1 and my_predict_result[0] == 2 :
+    result = np.hstack((i2, win, i1))
+elif predict_result[0] == 1 and my_predict_result[0] == 0 :
+    result = np.hstack((i2, lose, i1))
+elif predict_result[0] == 2 and my_predict_result[0] == 0 :
+    result = np.hstack((i2, win, i1))
+elif predict_result[0] == 2 and my_predict_result[0] == 1 :
+    result = np.hstack((i2, lose, i1))
 else:
-    result = np.hstack((image,tie,my_img))
+    result = np.hstack((i2, tie, i1))
 
-
-cv2.imshow('robot', image)
+cv2.imwrite("./result.jpg", result)
+cv2.imshow('robot', rawimage)
 cv2.imshow('me', my_img)
 cv2.imshow('result', result)
 

@@ -12,6 +12,13 @@ import joblib
 import os
 import random
 
+def one_img_read(img_path) -> list:
+    images = []
+    img = cv2.imread(img_path)
+    img = cv2.resize(img, (300, 300))
+    images.append(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
+    return images
+
 def img_read(dir_path) -> list:
     data = []
     images = os.listdir(dir_path)   # open the dir
@@ -75,12 +82,13 @@ def fit_module(x_train, y_train):
 def save_module(clf, module_name):
     joblib.dump(clf, module_name) # 儲存模型檔案(svc為訓練的模型)
 
-def random_image(folder) -> list:
+def random_image(folder):
     # data = []
     images = os.listdir(folder)
     random_filename = random.choice(images)
     print(folder + random_filename)
+    imagepath = folder + random_filename
     image = cv2.imread(folder + random_filename)
     image = cv2.resize(image, (300,300))
-    # data.append(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY))
-    return image
+    # data.append(image)
+    return (image, imagepath)
