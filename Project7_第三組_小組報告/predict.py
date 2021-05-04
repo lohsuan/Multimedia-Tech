@@ -47,9 +47,12 @@ else:
     result = np.hstack((i2, tie, i1))
 
 cv2.imwrite("./result.jpg", result)
-cv2.imshow('robot', rawimage)
-cv2.imshow('me', my_img)
+cv2.imshow('robot', i2)
+cv2.moveWindow('robot', 0, 0)
+cv2.imshow('me', i1)
+cv2.moveWindow('me', 600, 0)
 cv2.imshow('result', result)
+cv2.moveWindow('result', 0, 350)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
